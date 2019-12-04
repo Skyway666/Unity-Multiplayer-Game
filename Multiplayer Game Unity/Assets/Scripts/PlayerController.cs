@@ -20,11 +20,21 @@ public class PlayerController : NetworkBehaviour
     void CmdChangeName(string name) { playerName = name; }
     void SyncNameChanged(string name) { nameLabel.text = name; }
 
-    // OnGUI /////////////////////////////////////////
+    void CmdChangePlayerPrefab(short newIndex) { networkManager.ChangePlayerPrefab(this, newIndex);}
 
+
+    // OnGUI /////////////////////////////////////////
     private void OnGUI()
     {
         if (!isLocalPlayer) return;
+
+        short newIndex = (short)GUILayout.SelectionGrid(networkManager.playerPrefabIndex, networkManager.playerNames, 3);
+
+        if(newIndex != networkManager.playerPrefabIndex)
+        {
+            networkManager.playerPrefabIndex = newIndex;
+            CmdChangePlayerPrefab(newIndex);
+        }
 
         GUILayout.BeginArea(new Rect(Screen.width - 260, 10, 250, Screen.height - 20));
 
@@ -79,12 +89,16 @@ public class PlayerController : NetworkBehaviour
 
     // Lifecycle methods ////////////////////////////
 
+    public CustomNetworkManager networkManager;
     // Use this for initialization
     void Start ()
     {
         animator = GetComponent<Animator>();
         mainCamera = Camera.main;
         nameLabel = transform.Find("Label").gameObject.GetComponent<TextMesh>();
+
+        NetworkManager mng = NetworkManager.singleton;
+        networkManager = mng.GetComponent<CustomNetworkManager>();
     }
 
     // Update is called once per frame

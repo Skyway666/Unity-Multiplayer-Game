@@ -20,7 +20,7 @@ public class CustomNetworkManager : NetworkManager
     public short playerPrefabIndex = 0;
 
 
-    string[] playerNames = new string[] { "Boy", "Girl", "Robot" };
+    public string[] playerNames = new string[] { "Boy", "Girl", "Robot" };
     private void OnGUI()
     {
         if (!isNetworkActive)
@@ -60,6 +60,15 @@ public class CustomNetworkManager : NetworkManager
         MsgTypes.PlayerPrefabMsg msg = netMsg.ReadMessage<MsgTypes.PlayerPrefabMsg>();
         msg.prefabIndex = playerPrefabIndex;
         client.Send(MsgTypes.PlayerPrefabSelect, msg);
+    }
+
+    public void ChangePlayerPrefab(PlayerController currentPlayer, short prefabIndex)
+    {
+        GameObject newPlayer = Instantiate(spawnPrefabs[prefabIndex], currentPlayer.gameObject.transform.position, currentPlayer.gameObject.transform.rotation);
+
+        NetworkServer.Destroy(currentPlayer.gameObject);
+
+        NetworkServer.ReplacePlayerForConnection(currentPlayer.connectionToClient, newPlayer, 0);
     }
 
 
