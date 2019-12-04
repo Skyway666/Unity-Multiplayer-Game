@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     private Animator animator;
     private Camera mainCamera;
@@ -12,24 +13,26 @@ public class PlayerController : MonoBehaviour
     const float ROTATION_SPEED = 180.0f;
 
     // Name sync /////////////////////////////////////
+    [SyncVar(hook = "SyncNameChanged")]
+    public string playerName = "Player";
 
-    string playerName = "Player";
-
+    [Command]
+    void CmdChangeName(string name) { playerName = name; }
+    void SyncNameChanged(string name) { nameLabel.text = name; }
 
     // OnGUI /////////////////////////////////////////
 
     private void OnGUI()
     {
+        if (!isLocalPlayer) return;
+
         GUILayout.BeginArea(new Rect(Screen.width - 260, 10, 250, Screen.height - 20));
 
         string prevPlayerName = playerName;
         playerName = GUILayout.TextField(playerName);
         if (playerName != prevPlayerName)
         {
-            if (nameLabel != null)
-            {
-                nameLabel.text = playerName;
-            }
+            CmdChangeName(playerName);
         }
 
         GUILayout.EndArea();
@@ -37,10 +40,25 @@ public class PlayerController : MonoBehaviour
 
 
     // Animation sync ////////////////////////////////
-    
-    string animationName;
+
+
+    [SyncVar(hook = "OnSetAnimation")]
+    public string animationName;
+
 
     void setAnimation(string animName)
+    {
+        OnSetAnimation(animName);
+        CmdSetAnimation(animName);
+    }
+
+    [Command]
+    void CmdSetAnimation(string animName)
+    {
+        animationName = animName;
+    }
+
+    void OnSetAnimation(string animName)
     {
         if (animationName == animName) return;
         animationName = animName;
@@ -72,6 +90,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (nameLabel)
+        {
+            nameLabel.transform.rotation = Quaternion.identity;
+        }
+
+        if (!isLocalPlayer) return;
+
         Vector3 translation = new Vector3();
         float angle = 0.0f;
 
@@ -122,10 +147,6 @@ public class PlayerController : MonoBehaviour
             mainCamera.transform.LookAt(transform.position + new Vector3(0.0f, 2.0f, 0.0f), Vector3.up);
         }
 
-        if (nameLabel)
-        {
-            nameLabel.transform.rotation = Quaternion.identity;
-        }
     }
 
     private void OnDestroy()
