@@ -643,6 +643,10 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   playerPrefabIndex: 0
+  playerNames:
+  - Boy
+  - Girl
+  - Robot
 --- !u!4 &1238076519
 Transform:
   m_ObjectHideFlags: 0
