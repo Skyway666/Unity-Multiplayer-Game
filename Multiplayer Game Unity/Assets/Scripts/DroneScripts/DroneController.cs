@@ -54,7 +54,9 @@ public class DroneController : NetworkBehaviour
     {
         if (nameLabel)
         {
-            nameLabel.transform.rotation = Quaternion.identity;
+            nameLabel.transform.LookAt(Camera.main.transform);
+
+            nameLabel.transform.forward = -nameLabel.transform.forward;
         }
 
         if (!isLocalPlayer) return;
@@ -62,34 +64,79 @@ public class DroneController : NetworkBehaviour
         Vector3 translation = new Vector3();
         float angle = 0.0f;
 
-        float horizontalAxis = Input.GetAxis("Horizontal");
-        float verticalAxis = Input.GetAxis("Vertical");
 
-        if (verticalAxis > 0.0)
+        Vector2 LeftAxis = new Vector2(Input.GetAxis("HorizontalLeft"), Input.GetAxis("VerticalLeft"));
+        Vector2 RightAxis = new Vector2(Input.GetAxis("HorizontalRight"), Input.GetAxis("VerticalRight"));
+
+
+        if (LeftAxis.magnitude > 1)
+            LeftAxis.Normalize();
+        if (RightAxis.magnitude > 1)
+            RightAxis.Normalize();
+
+
+        // Left axis
+
+        // Forward
+        if (LeftAxis.y > 0.0 )
         {
-            translation += new Vector3(0.0f, 0.0f, verticalAxis * MOVEMENT_SPEED * Time.deltaTime);
+            translation += new Vector3(0.0f, 0.0f, LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime);
             transform.Translate(translation);
         }
-        else if (verticalAxis < 0.0)
+        // Backwards
+        else if (LeftAxis.y < 0.0)
         {
-            translation += new Vector3(0.0f, 0.0f, verticalAxis * MOVEMENT_SPEED * Time.deltaTime * 0.5f);
+            translation += new Vector3(0.0f, 0.0f, LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime);
             transform.Translate(translation);
         }
 
-        if (horizontalAxis > 0.0f)
+        // Right
+        if (LeftAxis.x > 0.0f)
         {
-            angle = horizontalAxis * Time.deltaTime * ROTATION_SPEED;
+            translation += new Vector3(LeftAxis.x * MOVEMENT_SPEED * Time.deltaTime, 0.0f, 0.0f );
+            transform.Translate(translation);
+        }
+        // Left
+        else if (LeftAxis.x < 0.0f)
+        {
+            translation += new Vector3(LeftAxis.x * MOVEMENT_SPEED * Time.deltaTime, 0.0f, 0.0f);
+            transform.Translate(translation);
+        }
+
+        // Righ axis
+        // Up
+        if(RightAxis.y > 0.0f)
+        {
+            translation += new Vector3(0.0f, RightAxis.y * MOVEMENT_SPEED * Time.deltaTime, 0.0f);
+            transform.Translate(translation);
+        }
+        // Down
+        else if(RightAxis.y < 0.0f)
+        {
+            translation += new Vector3(0.0f, RightAxis.y * MOVEMENT_SPEED * Time.deltaTime, 0.0f);
+            transform.Translate(translation);
+        }
+
+        if (RightAxis.x > 0.0f)
+        {
+            angle = RightAxis.x * Time.deltaTime * ROTATION_SPEED;
             transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
         }
-        else if (horizontalAxis < 0.0f)
+        else if (RightAxis.x < 0.0f)
         {
-            angle = horizontalAxis * Time.deltaTime * ROTATION_SPEED;
+            angle = RightAxis.x * Time.deltaTime * ROTATION_SPEED;
             transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
         }
+
+
+
+
 
         if (mainCamera)
         {
-            mainCamera.transform.SetPositionAndRotation(transform.position + new Vector3(0.0f, 2.0f, -4.0f), Quaternion.identity);
+            Vector3 offset = (-transform.forward * 8);
+            offset.y += 5;
+            mainCamera.transform.SetPositionAndRotation(transform.position + offset, Quaternion.identity);
             mainCamera.transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 0.0f), Vector3.up);
         }
 
