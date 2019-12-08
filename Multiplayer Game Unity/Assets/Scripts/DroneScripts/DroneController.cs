@@ -9,7 +9,10 @@ public class DroneController : NetworkBehaviour
     private TextMesh nameLabel;
 
     const float MOVEMENT_SPEED = 10.0f;
-    const float ROTATION_SPEED = 180.0f;
+    const float MAX_TILT_ANGLE = 20.0f;
+
+    const float Y_ROTATION_SPEED = 180.0f;
+    const float X_ROTATION_SPEED = 30.0f;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -82,12 +85,24 @@ public class DroneController : NetworkBehaviour
         {
             translation += new Vector3(0.0f, 0.0f, LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime);
             transform.Translate(translation);
+
+            if (transform.rotation.eulerAngles.x < MAX_TILT_ANGLE || transform.rotation.eulerAngles.x > 180)
+                transform.Rotate(new Vector3(X_ROTATION_SPEED * Time.deltaTime, 0, 0));
+
+            Debug.Log(transform.rotation.eulerAngles.x);
         }
         // Backwards
         else if (LeftAxis.y < 0.0)
         {
             translation += new Vector3(0.0f, 0.0f, LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime);
             transform.Translate(translation);
+        
+
+
+            if (transform.rotation.eulerAngles.x > 360 - MAX_TILT_ANGLE || transform.rotation.eulerAngles.x < 180)
+                transform.Rotate(new Vector3(-X_ROTATION_SPEED * Time.deltaTime, 0, 0));
+
+            Debug.Log(transform.rotation.eulerAngles.x);
         }
 
         // Right
@@ -119,12 +134,12 @@ public class DroneController : NetworkBehaviour
 
         if (RightAxis.x > 0.0f)
         {
-            angle = RightAxis.x * Time.deltaTime * ROTATION_SPEED;
+            angle = RightAxis.x * Time.deltaTime * Y_ROTATION_SPEED;
             transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
         }
         else if (RightAxis.x < 0.0f)
         {
-            angle = RightAxis.x * Time.deltaTime * ROTATION_SPEED;
+            angle = RightAxis.x * Time.deltaTime * Y_ROTATION_SPEED;
             transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
         }
 
