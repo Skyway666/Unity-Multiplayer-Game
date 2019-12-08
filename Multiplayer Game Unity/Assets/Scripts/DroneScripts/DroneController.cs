@@ -8,11 +8,12 @@ public class DroneController : NetworkBehaviour
     private Camera mainCamera;
     private TextMesh nameLabel;
 
-    public  float MOVEMENT_ACCELERATION = 0.2f;
-    public  float MOVEMENT_ACCELERATION_STABILIZATION_SPEED = 0.2f;
+    public  float MOVEMENT_ACCELERATION = 0.5f;
+    public  float MOVEMENT_ACCELERATION_STABILIZATION_SPEED = 0.5f;
+    public  float MAX_SPEED = 15.0f;
 
 
-    public  float MAX_TILT_ANGLE = 30.0f;
+    public  float MAX_TILT_ANGLE = 20.0f;
     public  float Y_ROTATION_SPEED = 180.0f;
     public  float XZ_ROTATION_SPEED = 90.0f;
     public  float XZ_ROTATION_STABILIZATION_SPEED = 40.0f;
@@ -226,7 +227,13 @@ public class DroneController : NetworkBehaviour
         transform.rotation = Quaternion.Euler(customEulerAngles.x, customEulerAngles.y, customEulerAngles.z);
 
         // Apply speed
+
+        float normalizedSpeed = MAX_SPEED * Time.deltaTime;
+        if (speed.magnitude > normalizedSpeed)
+            speed = speed.normalized * normalizedSpeed;
         transform.position += speed;
+
+        Debug.Log(speed.magnitude);
 
         if (mainCamera)
         {
