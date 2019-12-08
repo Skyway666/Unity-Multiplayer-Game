@@ -181,6 +181,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744d62d8a03a77449bd1a53c0203e9fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MOVEMENT_ACCELERATION: 0.2
+  MOVEMENT_ACCELERATION_STABILIZATION_SPEED: 0.2
+  MAX_TILT_ANGLE: 20
+  Y_ROTATION_SPEED: 180
+  XZ_ROTATION_SPEED: 90
+  XZ_ROTATION_STABILIZATION_SPEED: 40
   playerName: Player
   networkManager: {fileID: 0}
 --- !u!1 &6044441761880690349

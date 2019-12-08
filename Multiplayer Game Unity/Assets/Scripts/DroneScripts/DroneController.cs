@@ -8,14 +8,19 @@ public class DroneController : NetworkBehaviour
     private Camera mainCamera;
     private TextMesh nameLabel;
 
-    const float MOVEMENT_SPEED = 10.0f;
-    const float MAX_TILT_ANGLE = 20.0f;
+    public  float MOVEMENT_ACCELERATION = 0.2f;
+    public  float MOVEMENT_ACCELERATION_STABILIZATION_SPEED = 0.2f;
 
-    const float Y_ROTATION_SPEED = 180.0f;
-    const float X_ROTATION_SPEED = 60.0f;
+
+    public  float MAX_TILT_ANGLE = 30.0f;
+    public  float Y_ROTATION_SPEED = 180.0f;
+    public  float XZ_ROTATION_SPEED = 90.0f;
+    public  float XZ_ROTATION_STABILIZATION_SPEED = 40.0f;
 
 
     Vector3 customEulerAngles = new Vector3(0,0,0);
+
+    Vector3 speed = new Vector3(0, 0, 0);
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -55,6 +60,10 @@ public class DroneController : NetworkBehaviour
         networkManager = mng.GetComponent<CustomNetworkManager>();
     }
 
+    void HandleMovement()
+    {
+
+    }
     // Update is called once per frame
     void Update()
     {
@@ -88,73 +97,136 @@ public class DroneController : NetworkBehaviour
         // Forward
         if (LeftAxis.y > 0.0 )
         {
-            transform.position += Forward2d * LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime;
+            speed += Forward2d * LeftAxis.y * MOVEMENT_ACCELERATION * Time.deltaTime;
 
-            if (transform.rotation.eulerAngles.x < MAX_TILT_ANGLE || transform.rotation.eulerAngles.x > 180)
-                transform.Rotate(new Vector3(1, 0, 0), X_ROTATION_SPEED * Time.deltaTime);
+            if (customEulerAngles.x < MAX_TILT_ANGLE)
+                customEulerAngles.x += XZ_ROTATION_SPEED * Time.deltaTime;
 
         }
         // Backwards
         else if (LeftAxis.y < 0.0)
         {
-            transform.position += Forward2d * LeftAxis.y * MOVEMENT_SPEED * Time.deltaTime;
+            speed += Forward2d * LeftAxis.y * MOVEMENT_ACCELERATION * Time.deltaTime;
 
-            if (transform.rotation.eulerAngles.x > 360 - MAX_TILT_ANGLE || transform.rotation.eulerAngles.x < 180)
-                transform.Rotate(new Vector3(1, 0, 0), -X_ROTATION_SPEED * Time.deltaTime);
+            if (customEulerAngles.x > -MAX_TILT_ANGLE)
+               customEulerAngles.x -= XZ_ROTATION_SPEED * Time.deltaTime;
         }
 
         // Right
         if (LeftAxis.x > 0.0f)
         {
-            transform.position += Right2d * LeftAxis.x * MOVEMENT_SPEED * Time.deltaTime;
+            speed += Right2d * LeftAxis.x * MOVEMENT_ACCELERATION * Time.deltaTime;
 
-            if (transform.rotation.eulerAngles.z > 360 - MAX_TILT_ANGLE || transform.rotation.eulerAngles.z < 180)
-                transform.Rotate(new Vector3(0, 0, 1), -X_ROTATION_SPEED * Time.deltaTime);
+            if (customEulerAngles.z > -MAX_TILT_ANGLE)
+                customEulerAngles.z -= XZ_ROTATION_SPEED * Time.deltaTime;
         }
         // Left
         else if (LeftAxis.x < 0.0f)
         {
-            transform.position += Right2d * LeftAxis.x * MOVEMENT_SPEED * Time.deltaTime;
+            speed += Right2d * LeftAxis.x * MOVEMENT_ACCELERATION * Time.deltaTime;
 
-            if (transform.rotation.eulerAngles.z <  MAX_TILT_ANGLE || transform.rotation.eulerAngles.z > 180)
-                transform.Rotate(new Vector3(0, 0, 1), X_ROTATION_SPEED * Time.deltaTime);
+            if (customEulerAngles.z < MAX_TILT_ANGLE)
+                customEulerAngles.z += XZ_ROTATION_SPEED * Time.deltaTime;
         }
 
         // Righ axis
         // Up
         if(RightAxis.y > 0.0f)
         {
-            transform.Translate(new Vector3(0.0f, RightAxis.y * MOVEMENT_SPEED * Time.deltaTime, 0.0f));
+            speed += transform.up * RightAxis.y * MOVEMENT_ACCELERATION * Time.deltaTime;
         }
         // Down
         else if(RightAxis.y < 0.0f)
         {
-            transform.Translate(new Vector3(0.0f, RightAxis.y * MOVEMENT_SPEED * Time.deltaTime, 0.0f));
+            speed += transform.up * RightAxis.y * MOVEMENT_ACCELERATION * Time.deltaTime;
         }
         // Rotate right
         if (RightAxis.x > 0.0f)
         {
             angle = RightAxis.x * Time.deltaTime * Y_ROTATION_SPEED;
-            transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
+            customEulerAngles.y += angle;
         }
         // Rotate left
         else if (RightAxis.x < 0.0f)
         {
             angle = RightAxis.x * Time.deltaTime * Y_ROTATION_SPEED;
-            transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
+            customEulerAngles.y += angle;
         }
 
 
 
-        // Stabilization
 
 
 
 
+        // Stabilization of left axis angles
+        if (LeftAxis.y == 0)
+        {
 
-        // Force euler angles
+            // Too much x
+            if (customEulerAngles.x > 0)
+                customEulerAngles.x -= XZ_ROTATION_STABILIZATION_SPEED * Time.deltaTime;
 
-        //transform.rotation = Quaternion.Euler(customEulerAngles.x, customEulerAngles.y, customEulerAngles.z);
+            // Too few x
+            if (customEulerAngles.x < 0)
+                customEulerAngles.x += XZ_ROTATION_STABILIZATION_SPEED * Time.deltaTime;
+        }
+        if (LeftAxis.x == 0)
+        {
+            // ANGLE
+            // Too much z
+            if (customEulerAngles.z > 0)
+                customEulerAngles.z -= XZ_ROTATION_STABILIZATION_SPEED * Time.deltaTime;
+
+            // Too few z
+            if (customEulerAngles.z < 0)
+                customEulerAngles.z += XZ_ROTATION_STABILIZATION_SPEED * Time.deltaTime;
+
+        }
+
+
+
+        // Stabilization of right axis movement
+        if (RightAxis.y == 0)
+        {
+            // Too much y
+            if (speed.y > 0)
+                speed.y -= MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+
+            // Too few y
+            if (speed.y < 0)
+                speed.y += MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+        }
+        // Stabilization of left axis movement TODO: Handle properly, where if the player stops pressing one of the two axis
+        // said axis is stabilized
+        if (LeftAxis.magnitude == 0)
+        {
+            // Too much x
+            if (speed.x > 0)
+                speed.x -= MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+
+            // Too few x
+            if (speed.x < 0)
+                speed.x += MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+
+            // Speed
+            // Too much z
+            if (speed.z > 0)
+                speed.z -= MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+
+            // Too few z
+            if (speed.z < 0)
+                speed.z += MOVEMENT_ACCELERATION_STABILIZATION_SPEED * Time.deltaTime;
+
+        }
+
+
+
+        // Force euler angles 
+        transform.rotation = Quaternion.Euler(customEulerAngles.x, customEulerAngles.y, customEulerAngles.z);
+
+        // Apply speed
+        transform.position += speed;
 
         if (mainCamera)
         {
