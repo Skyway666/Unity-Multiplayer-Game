@@ -79,8 +79,6 @@ public class CustomNetworkManager : NetworkManager
 
     public void SpawnBullet(GameObject spaceship, int prefabIndex)
     {
-
-
         NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], spaceship.transform.position, spaceship.transform.rotation));
     }
 
