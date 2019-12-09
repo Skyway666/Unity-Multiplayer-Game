@@ -13,6 +13,12 @@ public class MsgTypes{
 
 }
 
+public enum DroneScenesPrefabs
+{
+    PlayerDrone,
+    Cylinder,
+    Bullet
+}
 
 
 public class CustomNetworkManager : NetworkManager
@@ -69,6 +75,13 @@ public class CustomNetworkManager : NetworkManager
         NetworkServer.Destroy(currentPlayer.gameObject);
 
         NetworkServer.ReplacePlayerForConnection(currentPlayer.connectionToClient, newPlayer, 0);
+    }
+
+    public void SpawnBullet(GameObject spaceship, int prefabIndex)
+    {
+
+
+        NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], spaceship.transform.position, spaceship.transform.rotation));
     }
 
 

@@ -7,6 +7,7 @@ public class DroneController : NetworkBehaviour
 {
     private Camera mainCamera;
     private TextMesh nameLabel;
+    public CustomNetworkManager networkManager;
 
     public  float MOVEMENT_ACCELERATION = 0.5f;
     public  float MOVEMENT_ACCELERATION_STABILIZATION_SPEED = 0.5f;
@@ -19,9 +20,12 @@ public class DroneController : NetworkBehaviour
     public  float XZ_ROTATION_STABILIZATION_SPEED = 40.0f;
 
 
-    Vector3 customEulerAngles = new Vector3(0,0,0);
-
+    Vector3 customEulerAngles = new Vector3(0, 0, 0);
     Vector3 speed = new Vector3(0, 0, 0);
+
+
+    // Axis input...
+    int rightAxisLastValue = 0;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -29,6 +33,11 @@ public class DroneController : NetworkBehaviour
 
     [Command]
     void CmdChangeName(string name) { playerName = name; }
+    void CmdSpawnBullet()
+    {
+        networkManager.SpawnBullet(gameObject, (int)DroneScenesPrefabs.Bullet);
+    }
+
     void SyncNameChanged(string name) { nameLabel.text = name; }
 
     // OnGUI /////////////////////////////////////////
@@ -50,7 +59,7 @@ public class DroneController : NetworkBehaviour
 
     // Lifecycle methods ////////////////////////////
 
-    public CustomNetworkManager networkManager;
+
     // Use this for initialization
     void Start()
     {
@@ -77,22 +86,32 @@ public class DroneController : NetworkBehaviour
 
         if (!isLocalPlayer) return;
 
-
+        // 2d Axis
         Vector3 Forward2d = (new Vector3(transform.forward.x, 0, transform.forward.z)).normalized;
         Vector3 Right2d = (new Vector3(transform.right.x, 0, transform.right.z)).normalized;
-        float angle = 0.0f;
 
 
+        // Input
         Vector2 LeftAxis = new Vector2(Input.GetAxis("HorizontalLeft"), Input.GetAxis("VerticalLeft"));
         Vector2 RightAxis = new Vector2(Input.GetAxis("HorizontalRight"), Input.GetAxis("VerticalRight"));
 
 
+        // FUCK UNITY
+        bool fire = Input.GetButtonDown("Fire") || Input.GetAxis("Fire") > 0.0f && rightAxisLastValue == 0;
+        rightAxisLastValue = (int)Input.GetAxis("Fire");
+
+        // Normalize Axis, shouldn't go faster in diagonal
         if (LeftAxis.magnitude > 1)
             LeftAxis.Normalize();
         if (RightAxis.magnitude > 1)
             RightAxis.Normalize();
 
 
+
+        // Fire
+
+        if (fire)
+            CmdSpawnBullet();
         // Left axis
 
         // Forward
@@ -141,6 +160,10 @@ public class DroneController : NetworkBehaviour
         {
             speed += transform.up * RightAxis.y * MOVEMENT_ACCELERATION * Time.deltaTime;
         }
+
+
+        float angle = 0.0f;
+
         // Rotate right
         if (RightAxis.x > 0.0f)
         {
