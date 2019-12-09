@@ -233,8 +233,6 @@ public class DroneController : NetworkBehaviour
             speed = speed.normalized * normalizedSpeed;
         transform.position += speed;
 
-        Debug.Log(speed.magnitude);
-
         if (mainCamera)
         {
             Vector3 offset = -Forward2d * 8;
