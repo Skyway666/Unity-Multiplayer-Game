@@ -140,9 +140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e59c5df0e0d5454f8dc3b7c42f69eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 4
   maxSpeed: 7
   minSpeed: 4
+  networkManager: {fileID: 0}
 --- !u!54 &54243229572872582
 Rigidbody:
   m_ObjectHideFlags: 0

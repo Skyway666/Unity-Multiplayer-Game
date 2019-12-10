@@ -38,12 +38,6 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         NetworkServer.RegisterHandler(MsgTypes.PlayerPrefabSelect, OnPrefabResponse);
-
-        if (!spawnedGameManager)
-        {
-            Instantiate(spawnPrefabs[3]);
-            spawnedGameManager = true;
-        }
         base.OnStartServer();
     }
 
@@ -83,14 +77,14 @@ public class CustomNetworkManager : NetworkManager
         NetworkServer.ReplacePlayerForConnection(currentPlayer.connectionToClient, newPlayer, 0);
     }
 
-    public void SpawnBullet(GameObject spaceship, int prefabIndex)
-    {
-        NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], spaceship.transform.position, spaceship.transform.rotation));
-    }
-
     public void Destroy(GameObject go)
     {
         NetworkServer.Destroy(go);
+    }
+
+    public void Spawn(int prefabIndex, Vector3 newPos, Quaternion rotation)
+    {
+        NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], newPos, rotation));
     }
 
 

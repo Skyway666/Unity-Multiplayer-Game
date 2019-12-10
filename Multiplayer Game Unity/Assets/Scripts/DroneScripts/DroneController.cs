@@ -37,7 +37,7 @@ public class DroneController : NetworkBehaviour
     void CmdChangeName(string name) { playerName = name; }
     void CmdSpawnBullet()
     {
-        networkManager.SpawnBullet(gameObject, (int)DroneScenesPrefabs.Bullet);
+        networkManager.Spawn((int)DroneScenesPrefabs.Bullet, transform.position, transform.rotation);
     }
 
     void SyncNameChanged(string name) { nameLabel.text = name; }

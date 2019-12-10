@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ObjectiveSpawner : MonoBehaviour
+public class ObjectiveSpawner : NetworkBehaviour
 {
-    // Prefabs
-    public GameObject shootable;
-    public GameObject collectable;
-    public GameObject obstacle;
 
 
     // Enviroment variables
@@ -28,9 +25,26 @@ public class ObjectiveSpawner : MonoBehaviour
     float lastSpawnedObstacleTime = 0;
     float nextObstacleSpawnInterval = 0; // Random value between 3 and 5 seconds
 
-    // Update is called once per frame
+
+
+    public CustomNetworkManager networkManager;
+
+
+    [Command]
+    void CmdSpawn(int prefabIndex,Vector3 newPos, Quaternion rotation)
+    {
+        networkManager.Spawn(prefabIndex, newPos, rotation);
+    }
+
+    private void Start()
+    {
+        NetworkManager mng = NetworkManager.singleton;
+        networkManager = mng.GetComponent<CustomNetworkManager>();
+    }
     void Update()
     {
+        if (!isServer) return;
+        
         if(Time.time - lastSpawnedShootableTime > nextShootableSpawnInterval)
         {
             // Reset timer
@@ -41,7 +55,7 @@ public class ObjectiveSpawner : MonoBehaviour
             Vector3 spawnPos = new Vector3(Random.Range(-XSpawnThreshHold, XSpawnThreshHold),
             SpawnHeight, Random.Range(-ZSpawnThreshHold, ZSpawnThreshHold));
 
-            Instantiate(shootable, spawnPos, Quaternion.identity);
+            CmdSpawn((int)AgentType.Shootable, spawnPos, Quaternion.identity);
         }
 
         if (Time.time - lastSpawnedCollectableTime > nextCollectableSpawnInterval)
@@ -54,7 +68,7 @@ public class ObjectiveSpawner : MonoBehaviour
             Vector3 spawnPos = new Vector3(Random.Range(-XSpawnThreshHold, XSpawnThreshHold),
             SpawnHeight, Random.Range(-ZSpawnThreshHold, ZSpawnThreshHold));
 
-            Instantiate(collectable, spawnPos, Quaternion.identity);
+            CmdSpawn((int)AgentType.Collectable, spawnPos, Quaternion.identity);
         }
 
         if (Time.time - lastSpawnedObstacleTime > nextObstacleSpawnInterval)
@@ -67,7 +81,7 @@ public class ObjectiveSpawner : MonoBehaviour
             Vector3 spawnPos = new Vector3(Random.Range(-XSpawnThreshHold, XSpawnThreshHold),
             SpawnHeight, Random.Range(-ZSpawnThreshHold, ZSpawnThreshHold));
 
-            Instantiate(obstacle, spawnPos, Quaternion.identity);
+            CmdSpawn((int)AgentType.Obstacle, spawnPos, Quaternion.identity);
         }
     }
 }

@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public enum ObjectiveType
+public enum AgentType
 {
-    Shootable,
-    Collectable
+    Shootable = 3,
+    Collectable,
+    Obstacle
 
 }
-public class Objective : MonoBehaviour
+public class Objective : NetworkBehaviour
 {
     // Start is called before the first frame update
 
-    public ObjectiveType type = ObjectiveType.Shootable;
+    public AgentType type = AgentType.Shootable;
 
     public float maxSpeed = 0;
     public float minSpeed = 0;
@@ -20,8 +22,18 @@ public class Objective : MonoBehaviour
 
     float maxHeight = 60.0f;
 
+    public CustomNetworkManager networkManager;
+
+    [Command]
+    void CmdDestroy(GameObject objective)
+    {
+        networkManager.Destroy(objective);
+    }
+
     private void Start()
     {
+        NetworkManager mng = NetworkManager.singleton;
+        networkManager = mng.GetComponent<CustomNetworkManager>();
         speed = Random.Range(minSpeed, maxSpeed);
     }
     // Update is called once per frame
@@ -38,16 +50,16 @@ public class Objective : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // A shootable object has been shot
-        if(type == ObjectiveType.Shootable && other.gameObject.tag == "Bullet" )
+        if(type == AgentType.Shootable && other.gameObject.tag == "Bullet" )
         {
-            Destroy(gameObject);
-            Destroy(other.gameObject);
+            CmdDestroy(gameObject);
+            CmdDestroy(other.gameObject);
 
             Debug.Log("Points added to player");
         }
-        if (type == ObjectiveType.Collectable && other.gameObject.tag == "Player")
+        if (type == AgentType.Collectable && other.gameObject.tag == "Player")
         {
-            Destroy(gameObject);
+            CmdDestroy(gameObject);
             // Give points to other.GameObject
 
             Debug.Log("Lots of points added to player");
