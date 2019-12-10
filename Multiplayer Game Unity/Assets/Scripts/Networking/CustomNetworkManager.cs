@@ -24,7 +24,7 @@ public enum DroneScenesPrefabs
 public class CustomNetworkManager : NetworkManager
 {
     public short playerPrefabIndex = 0;
-
+    bool spawnedGameManager = false;
 
     public string[] playerNames = new string[] { "Boy", "Girl", "Robot" };
     private void OnGUI()
@@ -38,6 +38,12 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         NetworkServer.RegisterHandler(MsgTypes.PlayerPrefabSelect, OnPrefabResponse);
+
+        if (!spawnedGameManager)
+        {
+            Instantiate(spawnPrefabs[3]);
+            spawnedGameManager = true;
+        }
         base.OnStartServer();
     }
 

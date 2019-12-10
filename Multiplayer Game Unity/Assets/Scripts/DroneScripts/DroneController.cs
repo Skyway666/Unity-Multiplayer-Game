@@ -27,6 +27,8 @@ public class DroneController : NetworkBehaviour
     // Axis input...
     int rightAxisLastValue = 0;
 
+    float maxHeight = 50.0f;
+
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
     public string playerName = "Player";
@@ -255,6 +257,10 @@ public class DroneController : NetworkBehaviour
         if (speed.magnitude > normalizedSpeed)
             speed = speed.normalized * normalizedSpeed;
         transform.position += speed;
+
+        if (transform.position.y > maxHeight)
+            transform.position = new Vector3(transform.position.x, maxHeight, transform.position.z);
+
 
         if (mainCamera)
         {

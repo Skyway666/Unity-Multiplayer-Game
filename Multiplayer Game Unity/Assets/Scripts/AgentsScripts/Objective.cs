@@ -18,6 +18,8 @@ public class Objective : MonoBehaviour
     public float minSpeed = 0;
     float speed = 3;
 
+    float maxHeight = 60.0f;
+
     private void Start()
     {
         speed = Random.Range(minSpeed, maxSpeed);
@@ -27,6 +29,10 @@ public class Objective : MonoBehaviour
     {
         transform.Rotate(new Vector3(1, 0, 0), 90 * Time.deltaTime);
         transform.position += new Vector3(0, speed * Time.deltaTime, 0);
+
+
+        if (transform.position.y > maxHeight)
+            Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
