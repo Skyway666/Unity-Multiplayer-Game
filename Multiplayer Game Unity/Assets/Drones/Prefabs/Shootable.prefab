@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6296426145070571442}
   - component: {fileID: 54243229572872582}
   m_Layer: 0
-  m_Name: Objective
+  m_Name: Shootable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c49177e89b2582f4da450ca5f84d41f1, type: 2}
+  - {fileID: 2100000, guid: a93964d5a56bf65448fa5c973da84561, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,6 +140,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e59c5df0e0d5454f8dc3b7c42f69eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  maxSpeed: 4
+  minSpeed: 1.5
 --- !u!54 &54243229572872582
 Rigidbody:
   m_ObjectHideFlags: 0
