@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.1
+  m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744d62d8a03a77449bd1a53c0203e9fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 0}
   MOVEMENT_ACCELERATION: 0.5
   MOVEMENT_ACCELERATION_STABILIZATION_SPEED: 0.5
   MAX_SPEED: 15
@@ -189,7 +190,6 @@ MonoBehaviour:
   XZ_ROTATION_SPEED: 90
   XZ_ROTATION_STABILIZATION_SPEED: 40
   playerName: Player
-  networkManager: {fileID: 0}
 --- !u!1 &6044441761880690349
 GameObject:
   m_ObjectHideFlags: 0

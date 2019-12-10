@@ -82,5 +82,10 @@ public class CustomNetworkManager : NetworkManager
         NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], spaceship.transform.position, spaceship.transform.rotation));
     }
 
+    public void Destroy(GameObject go)
+    {
+        NetworkServer.Destroy(go);
+    }
+
 
 }
