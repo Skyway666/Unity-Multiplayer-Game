@@ -27,7 +27,8 @@ public class DroneController : NetworkBehaviour
     // Axis input...
     int rightAxisLastValue = 0;
 
-    float maxHeight = 50.0f;
+    float limitSquareSize = 50.0f;
+    float minHeight = 0.0f;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -258,9 +259,24 @@ public class DroneController : NetworkBehaviour
             speed = speed.normalized * normalizedSpeed;
         transform.position += speed;
 
-        if (transform.position.y > maxHeight)
-            transform.position = new Vector3(transform.position.x, maxHeight, transform.position.z);
-
+        // Top
+        if (transform.position.y > limitSquareSize)
+            transform.position = new Vector3(transform.position.x, limitSquareSize, transform.position.z);
+        // Bottom
+        if (transform.position.y < 0)
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        // Right
+        if (transform.position.x > limitSquareSize)
+            transform.position = new Vector3(limitSquareSize, transform.position.y, transform.position.z);
+        // Left
+        if (transform.position.x < -limitSquareSize)
+            transform.position = new Vector3(-limitSquareSize, transform.position.y, transform.position.z);
+        // Front
+        if (transform.position.z > limitSquareSize)
+            transform.position = new Vector3(transform.position.x, transform.position.y, limitSquareSize);
+        // Back
+        if (transform.position.z < -limitSquareSize)
+            transform.position = new Vector3(transform.position.x, transform.position.y, -limitSquareSize);
 
         if (mainCamera)
         {

@@ -8,7 +8,7 @@ TODOS:
 
 Mandatory:
 - Wait for two players to be connected before starting the match
-- Enviroment improvement
+- Enviroment improvement -> DONE
 - Punctuation system for the two players
 - Game loop
 - Functional UI
