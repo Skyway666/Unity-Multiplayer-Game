@@ -16,3 +16,5 @@ Mandatory:
 
 Optional:
 - Improve UI
+- AutoAim
+- Guear system (change max speed)
