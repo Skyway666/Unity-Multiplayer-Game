@@ -24,7 +24,6 @@ public enum DroneScenesPrefabs
 public class CustomNetworkManager : NetworkManager
 {
     public short playerPrefabIndex = 0;
-    bool spawnedGameManager = false;
 
     public string[] playerNames = new string[] { "Boy", "Girl", "Robot" };
     private void OnGUI()
@@ -85,6 +84,15 @@ public class CustomNetworkManager : NetworkManager
     public void Spawn(int prefabIndex, Vector3 newPos, Quaternion rotation)
     {
         NetworkServer.Spawn(Instantiate(spawnPrefabs[prefabIndex], newPos, rotation));
+    }
+
+    public void SpawnBullet(int prefabIndex, GameObject father)
+    {
+        GameObject bullet = Instantiate(spawnPrefabs[prefabIndex], father.transform.position, father.transform.rotation);
+
+        bullet.GetComponent<DroneBullet>().player = father.GetComponent<DroneController>().playerID;
+
+        NetworkServer.Spawn(bullet);
     }
 
 

@@ -8,6 +8,10 @@ public class DroneBullet : NetworkBehaviour
 
     public float speed = 100.0f;
     public float life = 4.0f;
+
+    public int player = 1;
+
+
     public CustomNetworkManager networkManager;
 
     float spawnedTime = 0;

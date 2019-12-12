@@ -19,6 +19,8 @@ public class DroneController : NetworkBehaviour
     public  float XZ_ROTATION_SPEED = 90.0f;
     public  float XZ_ROTATION_STABILIZATION_SPEED = 40.0f;
 
+    public int playerID = 1;
+
 
     Vector3 customEulerAngles = new Vector3(0, 0, 0);
     Vector3 speed = new Vector3(0, 0, 0);

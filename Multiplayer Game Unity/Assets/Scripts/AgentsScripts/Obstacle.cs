@@ -8,6 +8,7 @@ public class Obstacle : NetworkBehaviour
     float maxHeight = 60.0f;
 
     public CustomNetworkManager networkManager;
+    public PointsManagement points;
 
     [Command]
     void CmdDestroy(GameObject obstacle)
@@ -17,6 +18,8 @@ public class Obstacle : NetworkBehaviour
 
     private void Start()
     {
+
+        points = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PointsManagement>();
         NetworkManager mng = NetworkManager.singleton;
         networkManager = mng.GetComponent<CustomNetworkManager>();
     }
@@ -36,6 +39,7 @@ public class Obstacle : NetworkBehaviour
         {
             CmdDestroy(gameObject);
             // Substract points to other.GameObject
+            points.AddScore(other.gameObject.GetComponent<DroneController>().playerID, -200);
             Debug.Log("Points substracted from player");
         }
 

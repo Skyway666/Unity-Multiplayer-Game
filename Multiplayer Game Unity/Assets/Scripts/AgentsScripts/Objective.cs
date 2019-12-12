@@ -23,6 +23,7 @@ public class Objective : NetworkBehaviour
     float maxHeight = 60.0f;
 
     public CustomNetworkManager networkManager;
+    public PointsManagement points;
 
     [Command]
     void CmdDestroy(GameObject objective)
@@ -32,6 +33,9 @@ public class Objective : NetworkBehaviour
 
     private void Start()
     {
+
+        points = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PointsManagement>();
+
         NetworkManager mng = NetworkManager.singleton;
         networkManager = mng.GetComponent<CustomNetworkManager>();
         speed = Random.Range(minSpeed, maxSpeed);
@@ -55,13 +59,15 @@ public class Objective : NetworkBehaviour
             CmdDestroy(gameObject);
             CmdDestroy(other.gameObject);
 
+            points.AddScore(other.gameObject.GetComponent<DroneBullet>().player, 50);
+
             Debug.Log("Points added to player");
         }
         if (type == AgentType.Collectable && other.gameObject.tag == "Player")
         {
             CmdDestroy(gameObject);
             // Give points to other.GameObject
-
+            points.AddScore(other.gameObject.GetComponent<DroneController>().playerID, 100);
             Debug.Log("Lots of points added to player");
         }
 

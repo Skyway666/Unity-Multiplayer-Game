@@ -13,6 +13,7 @@ Mandatory:
 - Game loop
 - Functional UI
 - Particles and sounds
+- Fix shity input thing
 
 Optional:
 - Improve UI
