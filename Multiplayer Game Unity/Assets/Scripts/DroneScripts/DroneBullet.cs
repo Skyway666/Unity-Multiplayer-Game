@@ -19,6 +19,11 @@ public class DroneBullet : NetworkBehaviour
     {
         NetworkServer.Destroy(GO);
     }
+    [Command]
+    void CmdAddPoints(int pointAmount)
+    {
+        points.RpcAddScore(playerID, pointAmount);
+    }
 
     void Start()
     {
@@ -30,7 +35,7 @@ public class DroneBullet : NetworkBehaviour
     {
         transform.position += transform.forward * speed * Time.deltaTime;
 
-        if (!localPlayerAuthority) return;
+        if (!hasAuthority) return;
 
         if (Time.time - spawnedTime > life)
             CmdDestroy(gameObject);
@@ -41,14 +46,14 @@ public class DroneBullet : NetworkBehaviour
 
         // A shootable object has been shot. ONLY IF BULLET IS LOCAL
 
-        if (other.tag != "Agent") return;
+        if (other.tag != "Agent" || !hasAuthority) return;
         AgentType type = other.gameObject.GetComponent<AgentBehaviour>().type;
 
         switch (type)
         {
             case AgentType.Shootable:
                 {
-                    points.AddScore(playerID, 50);
+                    CmdAddPoints(50);
                     CmdDestroy(other.gameObject);
                     CmdDestroy(gameObject);
 

@@ -20,3 +20,4 @@ Optional:
 - Improve UI
 - AutoAim
 - Guear system (change max speed)
+- Implement drone animation

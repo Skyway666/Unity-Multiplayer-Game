@@ -37,6 +37,7 @@ public class DroneController : NetworkBehaviour
     [SyncVar(hook = "SyncNameChanged")]
     public string playerName = "Player";
 
+
     [Command]
     void CmdChangeName(string name) { playerName = name; }
     [Command]
@@ -48,6 +49,11 @@ public class DroneController : NetworkBehaviour
     void CmdDestroy(GameObject GO)
     {
         NetworkServer.Destroy(GO);
+    }
+    [Command]
+    void CmdAddPoints(int pointAmount)
+    {
+        points.RpcAddScore(playerID, pointAmount);
     }
 
     void SyncNameChanged(string name) { nameLabel.text = name; }
@@ -298,21 +304,21 @@ public class DroneController : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.tag != "Agent") return;
+        if (other.tag != "Agent" || !isLocalPlayer) return;
         // A shootable object has been shot. ONLY IF BULLET IS LOCAL
         AgentType type = other.gameObject.GetComponent<AgentBehaviour>().type;
 
         switch (type){
             case AgentType.Collectable:
                 {
-                    points.AddScore(playerID, 100);
+                    CmdAddPoints(100);
                     CmdDestroy(other.gameObject);
                     
                     break;
                 }
             case AgentType.Obstacle:
                 {
-                    points.AddScore(playerID, -200);
+                    CmdAddPoints(-200);
                     CmdDestroy(other.gameObject);
                     break;
                 }
