@@ -57,6 +57,7 @@ public class CustomNetworkManager : NetworkManager
     {
         MsgTypes.PlayerPrefabMsg msg = netMsg.ReadMessage<MsgTypes.PlayerPrefabMsg>();
         playerPrefab = spawnPrefabs[msg.prefabIndex];
+        playerPrefab.GetComponent<DroneController>().playerID = NetworkServer.connections.Count;
         base.OnServerAddPlayer(netMsg.conn, msg.controllerID);
     }
 
