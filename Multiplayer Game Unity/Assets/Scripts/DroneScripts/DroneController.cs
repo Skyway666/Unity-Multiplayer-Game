@@ -31,6 +31,7 @@ public class DroneController : NetworkBehaviour
 
     float limitSquareSize = 50.0f;
     float minHeight = 0.0f;
+    public PointsManagement points;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -38,9 +39,15 @@ public class DroneController : NetworkBehaviour
 
     [Command]
     void CmdChangeName(string name) { playerName = name; }
+    [Command]
     void CmdSpawnBullet()
     { 
-        networkManager.Spawn((int)DroneScenesPrefabs.Bullet, transform.position, transform.rotation);
+        networkManager.SpawnBullet((int)DroneScenesPrefabs.Bullet, gameObject);
+    }
+    [Command]
+    void CmdDestroy(GameObject GO)
+    {
+        NetworkServer.Destroy(GO);
     }
 
     void SyncNameChanged(string name) { nameLabel.text = name; }
@@ -73,6 +80,7 @@ public class DroneController : NetworkBehaviour
 
         NetworkManager mng = NetworkManager.singleton;
         networkManager = mng.GetComponent<CustomNetworkManager>();
+        points = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PointsManagement>();
     }
 
     // Update is called once per frame
@@ -286,8 +294,30 @@ public class DroneController : NetworkBehaviour
 
     }
 
-    private void OnDestroy()
+
+    private void OnTriggerEnter(Collider other)
     {
+
+        if (other.tag != "Agent") return;
+        // A shootable object has been shot. ONLY IF BULLET IS LOCAL
+        AgentType type = other.gameObject.GetComponent<AgentBehaviour>().type;
+
+        switch (type){
+            case AgentType.Collectable:
+                {
+                    points.AddScore(playerID, 100);
+                    CmdDestroy(other.gameObject);
+                    
+                    break;
+                }
+            case AgentType.Obstacle:
+                {
+                    points.AddScore(playerID, -200);
+                    CmdDestroy(other.gameObject);
+                    break;
+                }
+        }
+
     }
 
 }

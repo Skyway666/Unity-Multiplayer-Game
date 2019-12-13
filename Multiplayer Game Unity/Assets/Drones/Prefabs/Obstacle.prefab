@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 5877965308767855751}
   - component: {fileID: 7542927059031296631}
   - component: {fileID: 8411183639432252856}
-  - component: {fileID: 3361331133857403594}
   - component: {fileID: 114863589444054502}
+  - component: {fileID: 3256734718362637483}
   m_Layer: 0
   m_Name: Obstacle
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,20 +110,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3361331133857403594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4048865206858335136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ff5287b17a47da40a204b247a193bdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  networkManager: {fileID: 0}
-  points: {fileID: 0}
 --- !u!114 &114863589444054502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +143,18 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &3256734718362637483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4048865206858335136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e59c5df0e0d5454f8dc3b7c42f69eed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
+  maxSpeed: 3
+  minSpeed: 3

@@ -90,9 +90,9 @@ public class CustomNetworkManager : NetworkManager
     {
         GameObject bullet = Instantiate(spawnPrefabs[prefabIndex], father.transform.position, father.transform.rotation);
 
-        bullet.GetComponent<DroneBullet>().player = father.GetComponent<DroneController>().playerID;
+        bullet.GetComponent<DroneBullet>().playerID = father.GetComponent<DroneController>().playerID;
 
-        NetworkServer.Spawn(bullet);
+        NetworkServer.SpawnWithClientAuthority(bullet, father);
     }
 
 

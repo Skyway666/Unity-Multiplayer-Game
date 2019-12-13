@@ -7,6 +7,7 @@ TagManager:
   - MainCanvas
   - Bullet
   - GameManager
+  - Agent
   layers:
   - Default
   - TransparentFX
