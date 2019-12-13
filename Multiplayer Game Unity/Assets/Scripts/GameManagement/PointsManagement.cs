@@ -20,4 +20,12 @@ public class PointsManagement : NetworkBehaviour
         for (int i = 0; i < 2; i++)
             playerScores[i] = 0;
     }
+
+    private void Update()
+    {
+        if (!isServer) return;
+
+
+        // If p1 or p2 points reach the maximum, declare winner and reset after showing UI
+    }
 }

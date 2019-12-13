@@ -191,6 +191,7 @@ MonoBehaviour:
   XZ_ROTATION_SPEED: 90
   XZ_ROTATION_STABILIZATION_SPEED: 40
   playerID: 1
+  waitingForPlayers: 0
   playerName: Player
 --- !u!136 &3541941212125735640
 CapsuleCollider:

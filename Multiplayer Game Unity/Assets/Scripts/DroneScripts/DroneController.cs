@@ -22,6 +22,7 @@ public class DroneController : NetworkBehaviour
     public int playerID = 1;
 
 
+    // Custom values
     Vector3 customEulerAngles = new Vector3(0, 0, 0);
     Vector3 speed = new Vector3(0, 0, 0);
 
@@ -29,14 +30,19 @@ public class DroneController : NetworkBehaviour
     // Axis input...
     int rightAxisLastValue = 0;
 
+    // Drone Limits
     float limitSquareSize = 50.0f;
     float minHeight = 0.0f;
-    public PointsManagement points;
+
+    // External scripts
+    PointsManagement points;
+
+    // Others
+    public bool waitingForPlayers = false;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
     public string playerName = "Player";
-
 
     [Command]
     void CmdChangeName(string name) { playerName = name; }
@@ -79,7 +85,7 @@ public class DroneController : NetworkBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         mainCamera = Camera.main;
         nameLabel = transform.Find("Label").gameObject.GetComponent<TextMesh>();
@@ -99,7 +105,7 @@ public class DroneController : NetworkBehaviour
             nameLabel.transform.forward = -nameLabel.transform.forward;
         }
 
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || waitingForPlayers) return;
 
         // 2d Axis
         Vector3 Forward2d = (new Vector3(transform.forward.x, 0, transform.forward.z)).normalized;

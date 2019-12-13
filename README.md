@@ -7,9 +7,9 @@ some objectives
 TODOS:
 
 Mandatory:
-- Wait for two players to be connected before starting the match
+- Wait for two players to be connected before starting the match -> 	WIP
 - Enviroment improvement -> DONE
-- Punctuation system for the two players -> WIP
+- Punctuation system for the two players -> DONE
 - Game loop
 - Functional UI
 - Particles and sounds
