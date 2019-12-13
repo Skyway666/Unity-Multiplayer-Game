@@ -46,15 +46,14 @@ public class Objective : NetworkBehaviour
         transform.Rotate(new Vector3(1, 0, 0), 90 * Time.deltaTime);
         transform.position += new Vector3(0, speed * Time.deltaTime, 0);
 
-
         if (transform.position.y > maxHeight)
-            Destroy(gameObject);
+            CmdDestroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         // A shootable object has been shot
-        if(type == AgentType.Shootable && other.gameObject.tag == "Bullet" )
+        if (type == AgentType.Shootable && other.gameObject.tag == "Bullet" )
         {
             CmdDestroy(gameObject);
             CmdDestroy(other.gameObject);
@@ -63,6 +62,7 @@ public class Objective : NetworkBehaviour
 
             Debug.Log("Points added to player");
         }
+        // A collectable has been collected
         if (type == AgentType.Collectable && other.gameObject.tag == "Player")
         {
             CmdDestroy(gameObject);

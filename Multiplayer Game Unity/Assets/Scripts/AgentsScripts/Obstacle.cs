@@ -28,6 +28,7 @@ public class Obstacle : NetworkBehaviour
     {
         transform.position += new Vector3(0, 3 * Time.deltaTime, 0);
 
+
         if (transform.position.y > maxHeight)
             CmdDestroy(gameObject);
     }

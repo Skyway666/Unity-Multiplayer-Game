@@ -8,7 +8,7 @@ public class ObjectiveSpawner : NetworkBehaviour
 
 
     // Enviroment variables
-    float SpawnHeight = -4;
+    float SpawnHeight = -10;
     float XSpawnThreshHold = 50;
     float ZSpawnThreshHold = 50;
 

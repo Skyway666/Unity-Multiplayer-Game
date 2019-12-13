@@ -9,11 +9,12 @@ TODOS:
 Mandatory:
 - Wait for two players to be connected before starting the match
 - Enviroment improvement -> DONE
-- Punctuation system for the two players
+- Punctuation system for the two players -> WIP
 - Game loop
 - Functional UI
 - Particles and sounds
-- Fix shity input thing
+- Fix shity input thing -> PUT EVENT SYSTEM BACK AT SOME POINT
+- Fix bug of objects not being destroyed
 
 Optional:
 - Improve UI

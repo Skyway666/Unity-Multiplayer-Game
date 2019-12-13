@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 100
   life: 4
+  player: 1
   networkManager: {fileID: 0}
 --- !u!114 &114730314226546012
 MonoBehaviour:

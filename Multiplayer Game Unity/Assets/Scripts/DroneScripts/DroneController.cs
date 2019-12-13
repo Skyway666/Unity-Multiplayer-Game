@@ -39,7 +39,7 @@ public class DroneController : NetworkBehaviour
     [Command]
     void CmdChangeName(string name) { playerName = name; }
     void CmdSpawnBullet()
-    {
+    { 
         networkManager.Spawn((int)DroneScenesPrefabs.Bullet, transform.position, transform.rotation);
     }
 
@@ -75,10 +75,6 @@ public class DroneController : NetworkBehaviour
         networkManager = mng.GetComponent<CustomNetworkManager>();
     }
 
-    void HandleMovement()
-    {
-
-    }
     // Update is called once per frame
     void Update()
     {
