@@ -85,7 +85,7 @@ public class DroneController : NetworkBehaviour
 
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         mainCamera = Camera.main;
         nameLabel = transform.Find("Label").gameObject.GetComponent<TextMesh>();

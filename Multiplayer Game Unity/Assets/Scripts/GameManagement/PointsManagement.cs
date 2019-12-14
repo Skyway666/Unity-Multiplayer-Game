@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class PointsManagement : NetworkBehaviour
 {
+    public int winScore = 1000;
     int[] playerScores = new int[2];
     public Text[] playerScoresUI = new Text[2];
 
@@ -39,10 +40,10 @@ public class PointsManagement : NetworkBehaviour
         if (!isServer) return;
 
         // Player 1 wins
-        if(playerScores[0] >= 300)
+        if(playerScores[0] >= winScore)
         {
             RpcDeclareWinner(1);
-        } else if(playerScores[1] >= 300)
+        } else if(playerScores[1] >= winScore)
         {
             RpcDeclareWinner(2);
         }
