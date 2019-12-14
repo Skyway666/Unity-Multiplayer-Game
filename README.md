@@ -12,12 +12,13 @@ Mandatory:
 - Game loop -> DONE
 - Fix bug of objects not being destroyed -> DONE
 - Functional UI -> DONE
+- Wait for two players to be connected before starting the match -> DONE
+
 - Fix shity input thing -> PUT EVENT SYSTEM BACK AT SOME POINT
-- Wait for two players to be connected before starting the match -> WIP
 - Particles and sounds
 
 Optional:
 - Improve UI
 - AutoAim
 - Guear system (change max speed)
-- Implement drone animation
+- Implement drone animation -> DONE

@@ -38,7 +38,7 @@ public class DroneController : NetworkBehaviour
     PointsManagement points;
 
     // Others
-    public bool waitingForPlayers = false;
+    public bool waitingForPlayers = true;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -93,6 +93,18 @@ public class DroneController : NetworkBehaviour
         NetworkManager mng = NetworkManager.singleton;
         networkManager = mng.GetComponent<CustomNetworkManager>();
         points = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PointsManagement>();
+
+        if (isLocalPlayer) { 
+            // Set main camera in the first frame
+            Vector3 Forward2d = (new Vector3(transform.forward.x, 0, transform.forward.z)).normalized;
+            if (mainCamera)
+            {
+                Vector3 offset = -Forward2d * 8;
+                offset.y += 5;
+                mainCamera.transform.SetPositionAndRotation(transform.position + offset, Quaternion.identity);
+                mainCamera.transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 0.0f), Vector3.up);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -310,7 +322,8 @@ public class DroneController : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.tag != "Agent" || !isLocalPlayer) return;
+        if (other.tag != "Agent" || !isLocalPlayer || waitingForPlayers) return;
+
         // A shootable object has been shot. ONLY IF BULLET IS LOCAL
         AgentType type = other.gameObject.GetComponent<AgentBehaviour>().type;
 

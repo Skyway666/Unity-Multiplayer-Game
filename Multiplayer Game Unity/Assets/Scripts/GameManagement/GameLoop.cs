@@ -6,27 +6,29 @@ using UnityEngine.Networking;
 public class GameLoop : NetworkBehaviour
 {
     public int maxPlayers = 2;
-    int lastNetworkCount = 0;
+    int playerAmount = 0;
+
+    public GameObject waitingForPlayersLabel;
     
     // Update is called once per frame
     void Update()
     {
         if (!isServer) return;
 
-        return;
-
-        if (NetworkServer.connections.Count == 2 && lastNetworkCount == 1)
+        // A player joined, now they are more than one and can play
+        if (GameObject.FindGameObjectsWithTag("Player").Length == 2 && playerAmount == 1)
         {
             // Update all players I guess
             StartCoroutine(SetToWait(false));
         } 
 
-        if(NetworkServer.connections.Count == 1 && lastNetworkCount == 2)
+        // A player left. There is only one so he can't play
+        if(GameObject.FindGameObjectsWithTag("Player").Length == 1 && playerAmount == 2)
         {
             // Update all players I guess
             StartCoroutine(SetToWait(true));
         }
-        lastNetworkCount = NetworkServer.connections.Count;
+        playerAmount = GameObject.FindGameObjectsWithTag("Player").Length;
 
     }
     [ClientRpc]
@@ -37,7 +39,7 @@ public class GameLoop : NetworkBehaviour
         foreach (GameObject player in players)
             player.GetComponent<DroneController>().waitingForPlayers = wait;
 
-        GameObject.FindGameObjectWithTag("WaitingForPlayersLabel").SetActive(wait);
+        waitingForPlayersLabel.SetActive(wait);
     }
 
     IEnumerator SetToWait(bool wait)
