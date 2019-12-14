@@ -7,14 +7,14 @@ some objectives
 TODOS:
 
 Mandatory:
-- Wait for two players to be connected before starting the match -> 	WIP
+- Wait for two players to be connected before starting the match -> WIP
 - Enviroment improvement -> DONE
 - Punctuation system for the two players -> DONE
-- Game loop
+- Game loop -> DONE
 - Functional UI
 - Particles and sounds
 - Fix shity input thing -> PUT EVENT SYSTEM BACK AT SOME POINT
-- Fix bug of objects not being destroyed
+- Fix bug of objects not being destroyed -> DONE
 
 Optional:
 - Improve UI

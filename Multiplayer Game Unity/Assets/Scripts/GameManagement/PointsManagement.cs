@@ -9,11 +9,24 @@ public class PointsManagement : NetworkBehaviour
     int[] playerScores = new int[2];
     public Text[] playerScoresUI = new Text[2];
 
+    public GameObject winnerLabel;
+    public Text winnerText;
+
     [ClientRpc]
     public void RpcAddScore(int player, int amount)
     {
         playerScores[player - 1] += amount;
         playerScoresUI[player - 1].text = "Player " + player + ": " + playerScores[player - 1];
+    }
+    [ClientRpc]
+    public void RpcDeclareWinner(int winner)
+    {
+        winnerLabel.SetActive(true);
+        winnerText.text = "Player " + winner + " WINS!";
+        for (int i = 0; i < 2; i++)
+            playerScores[i] = 0;
+
+        StartCoroutine(DelayedResetGame());
     }
     private void Start()
     {
@@ -25,7 +38,22 @@ public class PointsManagement : NetworkBehaviour
     {
         if (!isServer) return;
 
+        // Player 1 wins
+        if(playerScores[0] >= 300)
+        {
+            RpcDeclareWinner(1);
+        } else if(playerScores[1] >= 300)
+        {
+            RpcDeclareWinner(2);
+        }
+    }
 
-        // If p1 or p2 points reach the maximum, declare winner and reset after showing UI
+    IEnumerator DelayedResetGame()
+    {
+        yield return new WaitForSeconds(1.0f);
+        winnerLabel.SetActive(false);
+        for (int i = 0; i < 2; i++) 
+            playerScoresUI[i].text = "Player " + (i+1) + ": " + playerScores[i];
+        
     }
 }
