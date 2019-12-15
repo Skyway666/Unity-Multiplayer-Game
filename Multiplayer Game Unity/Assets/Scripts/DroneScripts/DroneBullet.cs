@@ -8,10 +8,12 @@ public class DroneBullet : NetworkBehaviour
 
     public float speed = 100.0f;
     public float life = 4.0f;
+    public GameObject shootableParticle;
 
     public int playerID = 1;
     public PointsManagement points;
     float spawnedTime = 0;
+
 
 
     [Command]
@@ -45,8 +47,9 @@ public class DroneBullet : NetworkBehaviour
     {
 
         // A shootable object has been shot. ONLY IF BULLET IS LOCAL
-
         if (other.tag != "Agent" || !hasAuthority) return;
+
+
         AgentType type = other.gameObject.GetComponent<AgentBehaviour>().type;
 
         switch (type)
@@ -56,13 +59,14 @@ public class DroneBullet : NetworkBehaviour
                     CmdAddPoints(50);
                     CmdDestroy(other.gameObject);
                     CmdDestroy(gameObject);
-
+                    Instantiate(shootableParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
 
                     break;
                 }
             case AgentType.Obstacle:
                 {
                     CmdDestroy(gameObject);
+                    Instantiate(shootableParticle, gameObject.transform.position, gameObject.transform.rotation);
                     break;
                 }
         }

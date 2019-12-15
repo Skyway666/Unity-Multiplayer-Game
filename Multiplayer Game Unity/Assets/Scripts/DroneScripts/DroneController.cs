@@ -39,6 +39,8 @@ public class DroneController : NetworkBehaviour
 
     // Others
     public bool waitingForPlayers = true;
+    public GameObject collectableParticle;
+    public GameObject obstacleParticle;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -332,13 +334,15 @@ public class DroneController : NetworkBehaviour
                 {
                     CmdAddPoints(100);
                     CmdDestroy(other.gameObject);
-                    
+                    Instantiate(collectableParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
+
                     break;
                 }
             case AgentType.Obstacle:
                 {
                     CmdAddPoints(-200);
                     CmdDestroy(other.gameObject);
+                    Instantiate(obstacleParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
                     break;
                 }
         }
