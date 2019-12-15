@@ -147,6 +147,7 @@ public class DroneController : NetworkBehaviour
 
         if (fire)
             CmdSpawnBullet();
+    
         // Left axis
 
         // Forward
