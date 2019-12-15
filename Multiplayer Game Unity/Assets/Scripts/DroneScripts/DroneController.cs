@@ -39,8 +39,6 @@ public class DroneController : NetworkBehaviour
 
     // Others
     public bool waitingForPlayers = true;
-    public GameObject collectableParticle;
-    public GameObject obstacleParticle;
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -52,6 +50,11 @@ public class DroneController : NetworkBehaviour
     void CmdSpawnBullet()
     { 
         networkManager.SpawnBullet((int)DroneScenesPrefabs.Bullet, gameObject);
+    }
+    [Command]
+    void CmdSpawn(int prefabIndex, Vector3 newPos, Quaternion rotation)
+    {
+        networkManager.Spawn(prefabIndex, newPos, rotation);
     }
     [Command]
     void CmdDestroy(GameObject GO)
@@ -334,16 +337,17 @@ public class DroneController : NetworkBehaviour
             case AgentType.Collectable:
                 {
                     CmdAddPoints(100);
+                    CmdSpawn((int)DroneScenesPrefabs.CollectableParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
                     CmdDestroy(other.gameObject);
-                    Instantiate(collectableParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
+ 
 
                     break;
                 }
             case AgentType.Obstacle:
                 {
                     CmdAddPoints(-200);
+                    CmdSpawn((int)DroneScenesPrefabs.ObstacleParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
                     CmdDestroy(other.gameObject);
-                    Instantiate(obstacleParticle, other.gameObject.transform.position, other.gameObject.transform.rotation);
                     break;
                 }
         }

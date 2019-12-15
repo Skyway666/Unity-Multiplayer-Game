@@ -17,7 +17,10 @@ public enum DroneScenesPrefabs
 {
     PlayerDrone,
     Cylinder,
-    Bullet
+    Bullet,
+    CollectableParticle = 6,
+    ObstacleParticle,
+    ShootableParticle
 }
 
 
