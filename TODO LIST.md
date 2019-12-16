@@ -17,11 +17,11 @@ Mandatory:
 - Fix shity input thing -> DONE
 - Implement drone animation -> DONE
 - Player name from main menu -> DONE
-
-- Make Functinal UI for matchmaking and exiting game -> WIP
+- Make Functinal UI for matchmaking and exiting game -> DONE
+- Activate "waitingForPlayers" -> DONE
 
 - Redact Readme 
-- Activate "waitingForPlayers"
+
 
 
 

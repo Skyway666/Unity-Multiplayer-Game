@@ -92,5 +92,12 @@ public class NetworkCallbacks : MonoBehaviour
     }
 
 
+    // Others
+
+    public void shutDown()
+    {
+        Application.Quit();
+    }
+
 
 }
