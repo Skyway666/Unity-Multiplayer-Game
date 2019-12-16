@@ -76,18 +76,19 @@ public class NetworkCallbacks : MonoBehaviour
         networkManager.playerName = playerNameInputRoom.text;
     }
 
-    public void joinMMRoom()
-    {
-        networkManager.StartMatchMaker();
-    }
-
     public void updateRoomName()
     {
         networkManager.newRoomName = roomInput.text;
     }
+
+
+    public void joinMMRoom()
+    {
+        networkManager.JoinMatch();
+    }
     public void createMMRoom()
     {
-        // Startmatchmaking
+        networkManager.CreateRoom();
     }
 
 

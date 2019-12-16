@@ -19,6 +19,8 @@ Mandatory:
 - Player name from main menu -> DONE
 
 - Make Functinal UI for matchmaking and exiting game -> WIP
+
+- Redact Readme 
 - Activate "waitingForPlayers"
 
 
