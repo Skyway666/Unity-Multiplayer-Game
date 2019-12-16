@@ -15,14 +15,15 @@ Mandatory:
 - Wait for two players to be connected before starting the match -> DONE
 - Particles and sounds -> DONE
 - Fix shity input thing -> DONE
+- Implement drone animation -> DONE
+- Player name from main menu -> DONE
 
-- Make Functinal UI for matchmaking and exiting game
+- Make Functinal UI for matchmaking and exiting game -> WIP
+- Activate "waitingForPlayers"
+
 
 
 Optional:
-- Implement drone animation -> DONE
-
-- Improve UI
 - AutoAim
 - Guear system (change max speed)
 

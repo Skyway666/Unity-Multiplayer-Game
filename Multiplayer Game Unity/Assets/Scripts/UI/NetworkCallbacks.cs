@@ -7,20 +7,33 @@ public class NetworkCallbacks : MonoBehaviour
 {
     CustomNetworkManager networkManager;
 
-
+    // Lan party
     InputField adressInput;
     InputField portInput;
     InputField playerNameInput;
+
+    // Matchmaking
+    InputField roomInput;
+    InputField playerNameInputRoom;
 
     public void Start()
     {
 
         networkManager = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<CustomNetworkManager>();
+
+        // Lan party toggled
         if (GameObject.FindGameObjectWithTag("AdressInput"))
         {
             adressInput = GameObject.FindGameObjectWithTag("AdressInput").GetComponent<InputField>();
             portInput = GameObject.FindGameObjectWithTag("PortInput").GetComponent<InputField>();
             playerNameInput = GameObject.FindGameObjectWithTag("PlayerNameInput").GetComponent<InputField>();
+        }
+
+        // Matchmaking toggled
+        if (GameObject.FindGameObjectWithTag("RoomNameInput"))
+        {
+            roomInput = GameObject.FindGameObjectWithTag("RoomNameInput").GetComponent<InputField>();
+            playerNameInputRoom = GameObject.FindGameObjectWithTag("PlayerNameRoomInput").GetComponent<InputField>();
         }
     }
 
@@ -54,5 +67,29 @@ public class NetworkCallbacks : MonoBehaviour
     {
         networkManager.playerName = playerNameInput.text;
     }
+
+
+
+
+    public void updatePlayerNameInputRoom()
+    {
+        networkManager.playerName = playerNameInputRoom.text;
+    }
+
+    public void joinMMRoom()
+    {
+        networkManager.StartMatchMaker();
+    }
+
+    public void updateRoomName()
+    {
+        networkManager.newRoomName = roomInput.text;
+    }
+    public void createMMRoom()
+    {
+        // Startmatchmaking
+    }
+
+
 
 }

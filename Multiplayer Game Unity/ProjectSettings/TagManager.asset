@@ -13,6 +13,8 @@ TagManager:
   - AdressInput
   - PlayerNameInput
   - PortInput
+  - PlayerNameRoomInput
+  - RoomNameInput
   layers:
   - Default
   - TransparentFX

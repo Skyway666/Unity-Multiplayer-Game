@@ -28,6 +28,7 @@ public enum DroneScenesPrefabs
 public class CustomNetworkManager : NetworkManager
 {
     public string playerName = "Player";
+    public string newRoomName = "SampleRoom";
 
 
     public override void OnStartServer()
