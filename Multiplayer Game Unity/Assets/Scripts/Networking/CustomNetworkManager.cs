@@ -9,7 +9,7 @@ public class MsgTypes{
     public class PlayerPrefabMsg: MessageBase
     {
         public short controllerID;
-        public short prefabIndex;
+        public string playerName;
     }
 
 }
@@ -27,10 +27,8 @@ public enum DroneScenesPrefabs
 
 public class CustomNetworkManager : NetworkManager
 {
-    public short playerPrefabIndex = 0;
+    public string playerName = "Player";
 
-    public InputField adressInput;
-    public InputField portInput;
 
     public override void OnStartServer()
     {
@@ -54,15 +52,17 @@ public class CustomNetworkManager : NetworkManager
     public void OnPrefabResponse(NetworkMessage netMsg)
     {
         MsgTypes.PlayerPrefabMsg msg = netMsg.ReadMessage<MsgTypes.PlayerPrefabMsg>();
-        playerPrefab = spawnPrefabs[msg.prefabIndex];
-        playerPrefab.GetComponent<DroneController>().playerID = NetworkServer.connections.Count;
+        playerPrefab = spawnPrefabs[0];
+        DroneController player = playerPrefab.GetComponent<DroneController>();
+        player.playerID = NetworkServer.connections.Count;
+        player.startingName = msg.playerName;
         base.OnServerAddPlayer(netMsg.conn, msg.controllerID);
     }
 
     public void OnPrefabRequest(NetworkMessage netMsg)
     {
         MsgTypes.PlayerPrefabMsg msg = netMsg.ReadMessage<MsgTypes.PlayerPrefabMsg>();
-        msg.prefabIndex = playerPrefabIndex;
+        msg.playerName = playerName;
         client.Send(MsgTypes.PlayerPrefabSelect, msg);
     }
 
@@ -94,24 +94,5 @@ public class CustomNetworkManager : NetworkManager
         NetworkServer.SpawnWithClientAuthority(bullet, father);
     }
 
-    public void pleaseStartClient()
-    {
-        StartClient();
-    }
 
-    public void pleaseStartHost()
-    {
-        StartHost();
-    }
-
-
-    public void updateNetworkAdress()
-    {
-        networkAddress = adressInput.text;
-    }
-
-    public void updateNetworkPort()
-    {
-        networkPort = int.Parse(portInput.text);
-    }
 }

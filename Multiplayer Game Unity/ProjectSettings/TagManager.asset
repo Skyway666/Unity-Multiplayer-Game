@@ -9,6 +9,10 @@ TagManager:
   - GameManager
   - Agent
   - WaitingForPlayersLabel
+  - NetworkManager
+  - AdressInput
+  - PlayerNameInput
+  - PortInput
   layers:
   - Default
   - TransparentFX

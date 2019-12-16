@@ -39,6 +39,7 @@ public class DroneController : NetworkBehaviour
 
     // Others
     public bool waitingForPlayers = true;
+    public string startingName = "Player";
 
     // Name sync /////////////////////////////////////
     [SyncVar(hook = "SyncNameChanged")]
@@ -90,7 +91,7 @@ public class DroneController : NetworkBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         mainCamera = Camera.main;
         nameLabel = transform.Find("Label").gameObject.GetComponent<TextMesh>();
@@ -110,6 +111,8 @@ public class DroneController : NetworkBehaviour
                 mainCamera.transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 0.0f), Vector3.up);
             }
         }
+
+        playerName = startingName;
     }
 
     // Update is called once per frame
