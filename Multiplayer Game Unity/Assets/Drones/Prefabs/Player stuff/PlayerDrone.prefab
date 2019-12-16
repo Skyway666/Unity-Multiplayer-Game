@@ -558,9 +558,8 @@ MonoBehaviour:
   XZ_ROTATION_SPEED: 90
   XZ_ROTATION_STABILIZATION_SPEED: 40
   playerID: 1
-  waitingForPlayers: 0
-  collectableParticle: {fileID: 167058, guid: 1625b0df15965450c86850dd6d345e87, type: 3}
-  obstacleParticle: {fileID: 100002, guid: 51c7111a0ec932b4da8dde9f509d01a3, type: 3}
+  waitingForPlayers: 1
+  startingName: Player2
   playerName: Player
 --- !u!136 &3541941212125735640
 CapsuleCollider:
