@@ -28,13 +28,13 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        short newIndex = (short)GUILayout.SelectionGrid(networkManager.playerPrefabIndex, networkManager.playerNames, 3);
+        //short newIndex = (short)GUILayout.SelectionGrid(networkManager.playerPrefabIndex, networkManager.playerNames, 3);
 
-        if(newIndex != networkManager.playerPrefabIndex)
-        {
-            networkManager.playerPrefabIndex = newIndex;
-            CmdChangePlayerPrefab(newIndex);
-        }
+        //if(newIndex != networkManager.playerPrefabIndex)
+        //{
+        //    networkManager.playerPrefabIndex = newIndex;
+        //    CmdChangePlayerPrefab(newIndex);
+        //}
 
         GUILayout.BeginArea(new Rect(Screen.width - 260, 10, 250, Screen.height - 20));
 

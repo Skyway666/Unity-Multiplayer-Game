@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class MsgTypes{
     public const short PlayerPrefabSelect = MsgType.Highest + 1;
@@ -28,14 +29,8 @@ public class CustomNetworkManager : NetworkManager
 {
     public short playerPrefabIndex = 0;
 
-    public string[] playerNames = new string[] { "Boy", "Girl", "Robot" };
-    private void OnGUI()
-    {
-        if (!isNetworkActive)
-        {
-            playerPrefabIndex = (short)GUI.SelectionGrid(new Rect(Screen.width - 200, 10, 200, 50), playerPrefabIndex, playerNames, 3);
-        }
-    }
+    public InputField adressInput;
+    public InputField portInput;
 
     public override void OnStartServer()
     {
@@ -99,5 +94,24 @@ public class CustomNetworkManager : NetworkManager
         NetworkServer.SpawnWithClientAuthority(bullet, father);
     }
 
+    public void pleaseStartClient()
+    {
+        StartClient();
+    }
 
+    public void pleaseStartHost()
+    {
+        StartHost();
+    }
+
+
+    public void updateNetworkAdress()
+    {
+        networkAddress = adressInput.text;
+    }
+
+    public void updateNetworkPort()
+    {
+        networkPort = int.Parse(portInput.text);
+    }
 }

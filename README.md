@@ -14,8 +14,9 @@ Mandatory:
 - Functional UI -> DONE
 - Wait for two players to be connected before starting the match -> DONE
 - Particles and sounds -> DONE
+- Fix shity input thing -> DONE
 
-- Fix shity input thing -> PUT EVENT SYSTEM BACK AT SOME POINT
+- Make Functinal UI for matchmaking and exiting game
 
 
 Optional:
